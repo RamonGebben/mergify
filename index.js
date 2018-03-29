@@ -39,7 +39,7 @@ const getAllAssigned = async ({ userId }) => {
 
   const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
   simplifiedMergeRequest
-    .filter(({ state, assignee: { id: assignee } }) => state === 'opened')
+    .filter(({ state }) => state === 'opened')
     .forEach(printMergeRequest);
 }
 
@@ -53,7 +53,7 @@ const getAllSubmitted = async ({ userId }) => {
   spinner.stop();
   const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
   simplifiedMergeRequest
-    .filter(({ state, author: { id: author } }) => state !== 'merged')
+    .filter(({ state }) => state !== 'merged')
     .forEach(printMergeRequest);
 }
 
