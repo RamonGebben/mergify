@@ -6,15 +6,14 @@ A very *very* simple cli to check merge requests on Gitlab.
 ## Install
 
 ```
-yarn add @pindakaasman/mergify --global
+yarn global add @pindakaasman/mergify
 ```
 
-Add `GITLAB_USER_ID` and `GITLAB_PRIVATE_TOKEN` to your `.profile` or `.bashrc` and `source` it.
+To complete setup you will need to run the `configure` command to provide access to the Gitlab API.
 Documentation on how to get a private token can be [found at Gitlab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
 
 ```
-export GITLAB_PRIVATE_TOKEN=TOKEN_HERE
-export GITLAB_ID=USER_ID
+mergify --configure
 ```
 
 ## Usage

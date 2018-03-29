@@ -4,23 +4,12 @@
 const program = require('commander');
 const R = require('ramda');
 const chalk = require('chalk');
+const inquirer = require('inquirer');
 const pack = require('./package.json');
 const { getMergeRequests } = require('./lib/getMergeRequests');
-
-const {
-  GITLAB_USER_ID = 0,
-  GITLAB_PRIVATE_TOKEN,
-} = process.env;
-
-if (!GITLAB_PRIVATE_TOKEN || GITLAB_USER_ID === 0) {
-  throw new Error(
-`It looks like \`mergify\` was not properly configured.
-Please add \`GITLAB_USER_ID\` and \`GITLAB_PRIVATE_TOKEN\` to the environment`);
-}
-
-const currentUserId = parseInt(GITLAB_USER_ID);
-
-const padRight = (str, n, fill = '0') => str.length < n ? padRight(str + fill, n, fill) : str;
+const { printMergeRequest } = require('./lib/printMergeRequest');
+const { writeConfig } = require('./lib/writeConfig');
+const { readConfig } = require('./lib/readConfig');
 
 const simplifyMergeRequest = R.pick([
   'title',
@@ -33,61 +22,63 @@ const simplifyMergeRequest = R.pick([
   'web_url'
 ]);
 
-const states = {
-  merged: chalk.blue,
-  closed: chalk.red,
-  opened: chalk.green,
+const getAll = async () => {
+  console.log('#getAll')
+  const mergeRequests = await getMergeRequests();
+  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
+  simplifiedMergeRequest
+    .forEach(printMergeRequest);
 };
 
-const printMergeRequest = ({
-  title,
-  state,
-  author: { username: author },
-  assignee: { username: assignee },
-  source_branch,
-  web_url,
-}) => {
-  console.log(
-`${padRight(`[${states[state](state)}]`, 15, ' ')}
-${title}
-Branch: ${chalk.cyan(source_branch)}
-Assignee: ${chalk.cyan(assignee)}
-Author: ${chalk.cyan(author)}
-${chalk.gray(web_url)}
-`,
-  );
+const getAllAssigned = async ({ userId }) => {
+  console.log('#getAllAssigned', userId)
+  const mergeRequests = await getMergeRequests();
+  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
+  simplifiedMergeRequest
+    .filter(({ state, assignee: { id: assignee } }) => state !== 'merged' && assignee === userId)
+    .forEach(printMergeRequest);
+}
+
+const getAllSubmitted = async ({ userId }) => {
+  console.log('#getAllSubmitted', userId)
+  const mergeRequests = await getMergeRequests();
+  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
+  simplifiedMergeRequest
+    .filter(({ state, author: { id: author } }) => author === userId && state !== 'merged')
+    .forEach(printMergeRequest);
+}
+
+const configure = async () => {
+  try {
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'userId',
+        message: 'What is your Gitlab User ID?'
+      },
+      {
+        type: 'password',
+        name: 'privateToken',
+        message: 'What private token shall we use?',
+      },
+      {
+        type: 'input',
+        name: 'domain',
+        default: 'gitlab.com',
+        message: 'On what domain is your Gitlab instance?'
+      }
+    ]);
+
+    return writeConfig(answers);
+  } catch (error) {
+    throw new Error(error);
+    process.exit(1);
+  }
 }
 
 program
   .name('mergify')
   .version(pack.version)
-
-const getAll = async () => {
-  const mergeRequests = await getMergeRequests();
-  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
-  simplifiedMergeRequest
-    .forEach(printMergeRequest);
-};
-
-const getAllAssigned = async () => {
-  if (currentUserId === 1) throw new Error('No user ID configured.');
-
-  const mergeRequests = await getMergeRequests();
-  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
-  simplifiedMergeRequest
-    .filter(({ state, assignee: { id: assignee } }) => state !== 'merged' && assignee === currentUserId)
-    .forEach(printMergeRequest);
-}
-
-const getAllSubmitted = async () => {
-  if (currentUserId === 1) throw new Error('No user ID configured.');
-
-  const mergeRequests = await getMergeRequests();
-  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
-  simplifiedMergeRequest
-    .filter(({ state, author: { id: author } }) => author === currentUserId && state !== 'merged')
-    .forEach(printMergeRequest);
-}
 
 const options = [
   {
@@ -105,11 +96,32 @@ const options = [
     description: 'Get all open merge request submitted to you',
     fn: getAllSubmitted
   },
-]
+  {
+    trigger: '-c --configure',
+    description: 'Setup or update required config',
+    fn: configure
+  },
+];
 
-options.forEach(({ trigger, description, fn }) => {
-  program.option(trigger, description, fn);
-});
+const run = async() => {
+  let config = await readConfig();
 
-// Start
-program.parse(process.argv);
+  const {
+    userId,
+    privateToken
+  } = config;
+
+  if (!userId || !privateToken) {
+    await configure();
+    config = await readConfig();
+    console.log('🎉  All set, your ready to mergify!');
+  }
+
+  options.forEach(({ trigger, description, fn }) => {
+    program.option(trigger, description, (...args) => fn(config, ...args));
+  });
+
+  return program
+};
+
+run().then(p => p.parse(process.argv));
