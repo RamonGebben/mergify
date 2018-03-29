@@ -1,9 +1,11 @@
 {
   "dependencies": {
     "chalk": "^2.3.2",
+    "cli-spinner": "^0.2.8",
     "commander": "^2.15.1",
     "inquirer": "^5.2.0",
     "node-fetch": "^2.1.2",
+    "query-string": "^6.0.0",
     "ramda": "^0.25.0"
   },
   "name": "@pindakaasman/mergify",

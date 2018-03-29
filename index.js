@@ -5,6 +5,7 @@ const program = require('commander');
 const R = require('ramda');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
+const { Spinner } = require('cli-spinner');
 const pack = require('./package.json');
 const { getMergeRequests } = require('./lib/getMergeRequests');
 const { printMergeRequest } = require('./lib/printMergeRequest');
@@ -14,37 +15,45 @@ const { readConfig } = require('./lib/readConfig');
 const simplifyMergeRequest = R.pick([
   'title',
   'id',
+  'iid',
   'target_branch',
   'source_branch',
   'state',
   'author',
   'assignee',
-  'web_url'
+  'web_url',
+  'merge_status',
 ]);
 
-const getAll = async () => {
-  console.log('#getAll')
-  const mergeRequests = await getMergeRequests();
-  const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
-  simplifiedMergeRequest
-    .forEach(printMergeRequest);
-};
+const spinner = new Spinner('Processing.. %s');
+spinner.setSpinnerString('|/-\\');
 
 const getAllAssigned = async ({ userId }) => {
-  console.log('#getAllAssigned', userId)
-  const mergeRequests = await getMergeRequests();
+  spinner.start();
+  const params = {
+    assignee_id: userId,
+  };
+
+  const mergeRequests = await getMergeRequests(params);
+  spinner.stop();
+
   const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
   simplifiedMergeRequest
-    .filter(({ state, assignee: { id: assignee } }) => state !== 'merged' && assignee === userId)
+    .filter(({ state, assignee: { id: assignee } }) => state === 'opened')
     .forEach(printMergeRequest);
 }
 
 const getAllSubmitted = async ({ userId }) => {
-  console.log('#getAllSubmitted', userId)
-  const mergeRequests = await getMergeRequests();
+  spinner.start();
+  const params = {
+    author_id: userId,
+  };
+
+  const mergeRequests = await getMergeRequests(params);
+  spinner.stop();
   const simplifiedMergeRequest = R.map(simplifyMergeRequest)(mergeRequests);
   simplifiedMergeRequest
-    .filter(({ state, author: { id: author } }) => author === userId && state !== 'merged')
+    .filter(({ state, author: { id: author } }) => state !== 'merged')
     .forEach(printMergeRequest);
 }
 
@@ -82,12 +91,7 @@ program
 
 const options = [
   {
-    trigger: '-a --all',
-    description: 'Get all merge request',
-    fn: getAll
-  },
-  {
-    trigger: '-m --me',
+    trigger: '-a --assigned',
     description: 'Get all open merge request assigned to you',
     fn: getAllAssigned
   },

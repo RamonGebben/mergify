@@ -1,7 +1,5 @@
 # Mergify
-A very *very* simple cli to check merge requests on Gitlab.
-
-> NOTE: Only works for hosted Gitlab
+A very simple cli to check merge requests on Gitlab.
 
 ## Install
 
@@ -25,8 +23,8 @@ Just grab up the help menu by using `mergify --help` and you will be presented w
   Options:
 
     -V, --version   output the version number
-    -a --all        Get all merge request
-    -m --me         Get all open merge request assigned to you
+    -a --assigned   Get all open merge request assigned to you
     -s --submitted  Get all open merge request submitted to you
+    -c --configure  Setup or update required config
     -h, --help      output usage information
 ```
