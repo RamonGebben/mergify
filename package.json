@@ -9,7 +9,7 @@
     "ramda": "^0.25.0"
   },
   "name": "@pindakaasman/mergify",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Gitlab CLI for viewing merge requests\"",
   "main": "index.js",
   "bin": {
