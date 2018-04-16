@@ -1,6 +1,10 @@
 # Mergify
 A very simple cli to check merge requests on Gitlab.
 
+
+![npm](https://img.shields.io/npm/v/@pindakaasman/mergify.svg)
+![Package Quality](https://npm.packagequality.com/shield/@pindakaasman/mergify.svg)
+
 ## Install
 
 ```
