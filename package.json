@@ -10,7 +10,7 @@
   },
   "name": "@pindakaasman/mergify",
   "repository": "https://github.com/RamonGebben/mergify.git",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Gitlab CLI for viewing merge requests\"",
   "main": "index.js",
   "bin": {
