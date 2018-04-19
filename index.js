@@ -77,7 +77,7 @@ const verify = async ({ userId }) => {
   try {
     console.log('Verifying your config');
     spinner.start();
-    const userResp = await doFetch(`/users/${userId}`);
+    const userResp = await doFetch(`users/${userId}`);
 
     if (R.path(['message'], userResp) === UNAUTHORIZED_MESSAGE) {
       throw new Error(UNAUTHORIZED_MESSAGE);
