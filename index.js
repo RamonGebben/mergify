@@ -115,9 +115,9 @@ const configure = async () => {
       }
     ]);
 
-    await verify(answers);
+    await writeConfig(answers);
 
-    return writeConfig(answers);
+    return verify(answers);
   } catch (error) {
     throw new Error(error);
     process.exit(1);
