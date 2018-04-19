@@ -21,6 +21,7 @@ Just grab up the help menu by using `mergify --help` and you will be presented w
     -a --assigned   Get all open merge request assigned to you
     -s --submitted  Get all open merge request submitted to you
     -c --configure  Setup or update required config
+    -v --verify     Verify your config is correct
     -h, --help      output usage information
 ```
 
@@ -47,6 +48,6 @@ Complete documentation on how to get a private token can be [found at Gitlab](ht
 
 You will need to go to you [access tokens page](https://gitlab.com/profile/personal_access_tokens) and provide at least **read_user, read_registry and read_repository** access.
 
-See Screenshot for an example of access token creation  : 
+See Screenshot for an example of access token creation  :
 
 ![Example of Access Token creation](https://user-images.githubusercontent.com/921666/38989073-e1533fa6-43d5-11e8-957c-915fbcfec574.png)
