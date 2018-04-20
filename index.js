@@ -159,7 +159,7 @@ const run = async() => {
     privateToken
   } = config;
 
-  if (!userId || !privateToken) {
+  if (!program.version && (!userId || !privateToken)) {
     await configure();
     config = await readConfig();
     await verify();
