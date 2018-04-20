@@ -2,6 +2,7 @@
 A very simple cli to check merge requests on Gitlab.
 
 ![npm](http://img.shields.io/npm/v/@pindakaasman/mergify.svg)
+[![Build Status](https://travis-ci.org/RamonGebben/mergify.svg?branch=master)](https://travis-ci.org/RamonGebben/mergify)
 
 ## Install
 
