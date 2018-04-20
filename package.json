@@ -20,6 +20,7 @@
     "lib": "lib"
   },
   "devDependencies": {
+    "codecov": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
@@ -31,11 +32,13 @@
     "mock-fs": "^4.4.2"
   },
   "scripts": {
-    "test": "yarn jest"
+    "test": "jest && codecov"
   },
   "author": "Ramon Gebben <ramon@sensorfact.nl>",
   "license": "MIT",
   "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
     "setupFiles": [
       "./setupJest.js"
     ]
