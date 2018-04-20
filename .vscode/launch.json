@@ -18,6 +18,15 @@
             "args":[
                 "-V"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program submitted",
+            "program": "${workspaceFolder}/index.js",
+            "args": [
+                "-s"
+            ]
         }
     ]
 }

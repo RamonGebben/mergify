@@ -20,11 +20,27 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "jest": "^22.4.3"
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.4.3",
+    "jest-fetch-mock": "^1.5.0",
+    "mock-fs": "^4.4.2"
   },
   "scripts": {
-    "test": "yarn jest"
+    "test": "jest --coverage --silent=false",
+    "test-travis": "yarn test && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Ramon Gebben <ramon@sensorfact.nl>",
-  "license": "MIT"
+  "license": "MIT",
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "setupFiles": [
+      "./setupJest.js"
+    ]
+  }
 }
