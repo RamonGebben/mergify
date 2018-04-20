@@ -3,6 +3,7 @@
 
 const program = require('commander');
 const pack = require('./package.json');
+const { logger } = require('./lib/utils/logger');
 const { configure } = require('./lib/commands/configure');
 const { verify } = require('./lib/commands/verify');
 const { getAllAssigned } = require('./lib/commands/getAllAssigned');
@@ -58,4 +59,10 @@ const run = async() => {
   return program;
 };
 
-run().then(p => p.parse(process.argv));
+run().then(p => {
+  p.parse(process.argv);
+  if (!process.argv.slice(2).length) {
+    logger.log('No arguments specified, showing help.');
+    p.outputHelp();
+  }
+});
