@@ -47,8 +47,8 @@ It will be located on the right.
 
 Complete documentation on how to get a private token can be [found at Gitlab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
 
-You will need to go to you [access tokens page](https://gitlab.com/profile/personal_access_tokens) and provide at least **read_user, read_registry and read_repository** access.
+You will need to go to you [access tokens page](https://gitlab.com/profile/personal_access_tokens) and provide at least **api** access.
 
 See Screenshot for an example of access token creation  : 
 
-![Example of Access Token creation](https://user-images.githubusercontent.com/921666/38989073-e1533fa6-43d5-11e8-957c-915fbcfec574.png)
+<img width="611" alt="screen shot 2018-04-20 at 1 09 40 pm" src="https://user-images.githubusercontent.com/921666/39047997-4022dfa2-449c-11e8-9bec-12039ad94d94.png">
