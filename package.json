@@ -20,7 +20,6 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "codecov": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
@@ -32,7 +31,8 @@
     "mock-fs": "^4.4.2"
   },
   "scripts": {
-    "test": "jest && codecov"
+    "test": "jest --coverage --silent=false",
+    "test-travis": "yarn test && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Ramon Gebben <ramon@sensorfact.nl>",
   "license": "MIT",
