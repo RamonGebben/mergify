@@ -12,6 +12,7 @@ const { getMergeRequests } = require('./lib/getMergeRequests');
 const { printMergeRequest } = require('./lib/printMergeRequest');
 const { writeConfig } = require('./lib/writeConfig');
 const { readConfig } = require('./lib/readConfig');
+const { checkConfigExists } = require('./lib/checkConfigExists');
 
 const UNAUTHORIZED_MESSAGE = '401 Unauthorized';
 
@@ -95,6 +96,11 @@ const verify = async ({ userId }) => {
 }
 
 const configure = async () => {
+
+  if(await checkConfigExists()){
+    console.log(chalk.red.bold('Mergify is already configured. Configuring again will override the existing file.'));
+  }
+
   try {
     const answers = await inquirer.prompt([
       {
