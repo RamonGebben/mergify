@@ -2,4 +2,6 @@ node_modules
 .config
 yarn-error.log
 coverage
+
+.config*
 package-lock.json

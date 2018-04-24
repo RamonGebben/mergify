@@ -35,6 +35,11 @@
     "test-travis": "yarn test && cat ./coverage/lcov.info | coveralls"
   },
   "author": "Ramon Gebben <ramon@sensorfact.nl>",
+  "contributors": [
+    {
+      "name": "Julien Lengrand-Lambert <julien@lengrand.fr> - @jlengrand"
+    }
+  ],
   "license": "MIT",
   "jest": {
     "coverageDirectory": "./coverage/",
