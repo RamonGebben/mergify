@@ -8,6 +8,7 @@ const { configure } = require('./lib/commands/configure');
 const { verify } = require('./lib/commands/verify');
 const { getAllAssigned } = require('./lib/commands/getAllAssigned');
 const { getAllSubmitted } = require('./lib/commands/getAllSubmitted');
+const { disableCertificateVerification } = require('./lib/commands/disableCertificateVerification');
 
 const { readConfig } = require('./lib/utils/readConfig');
 
@@ -35,6 +36,11 @@ const options = [
     trigger: '-v --verify',
     description: 'Verify your config is correct',
     fn: verify
+  },
+  {
+    trigger: '-s --self-signed',
+    description: 'disables the verification of certificates when configuring mergify',
+    fn: disableCertificateVerification
   }
 ];
 
