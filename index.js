@@ -8,7 +8,7 @@ const { configure } = require('./lib/commands/configure');
 const { verify } = require('./lib/commands/verify');
 const { getAllAssigned } = require('./lib/commands/getAllAssigned');
 const { getAllSubmitted } = require('./lib/commands/getAllSubmitted');
-
+const { disableCertificateVerification } = require('./lib/options/disableCertificateVerification');
 const { readConfig } = require('./lib/utils/readConfig');
 
 program
@@ -29,7 +29,14 @@ const commands = [
   {
     trigger: 'configure',
     description: 'Setup or update required config',
-    fn: configure
+    fn: configure,
+    options: [
+      {
+        trigger: '-s --self-signed',
+        description: 'disables the verification of certificates when configuring mergify',
+        fn: disableCertificateVerification
+      }
+    ]
   },
   {
     trigger: 'verify',
@@ -52,11 +59,21 @@ const run = async() => {
     await verify();
   }
 
-  commands.forEach(({ trigger, description, fn }) => {
+  commands.forEach(({ trigger, description, fn, options }) => {
     program
       .command(trigger)
       .description(description)
       .action((...args) => fn(config, ...args));
+
+    if(options && options.length > 0){
+      options.forEach(
+        (option) => {
+          program.commands[program.commands.length - 1]
+            .option(option.trigger, option.description, option.fn);
+        }
+      );
+    }
+
   });
 
   return program;
