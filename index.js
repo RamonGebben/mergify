@@ -15,24 +15,24 @@ program
   .name('mergify')
   .version(pack.version);
 
-const options = [
+const commands = [
   {
-    trigger: '-a --assigned',
+    trigger: 'assigned',
     description: 'Get all open merge request assigned to you',
     fn: getAllAssigned
   },
   {
-    trigger: '-s --submitted',
+    trigger: 'submitted',
     description: 'Get all open merge request submitted to you',
     fn: getAllSubmitted
   },
   {
-    trigger: '-c --configure',
+    trigger: 'configure',
     description: 'Setup or update required config',
     fn: configure
   },
   {
-    trigger: '-v --verify',
+    trigger: 'verify',
     description: 'Verify your config is correct',
     fn: verify
   }
@@ -52,8 +52,11 @@ const run = async() => {
     await verify();
   }
 
-  options.forEach(({ trigger, description, fn }) => {
-    program.option(trigger, description, (...args) => fn(config, ...args));
+  commands.forEach(({ trigger, description, fn }) => {
+    program
+      .command(trigger)
+      .description(description)
+      .action((...args) => fn(config, ...args));
   });
 
   return program;
