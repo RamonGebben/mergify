@@ -15,6 +15,14 @@ program
   .name('mergify')
   .version(pack.version);
 
+const options = [
+  {
+    trigger: '-s --self-signed',
+    description: 'disables the verification of certificates for commands',
+    fn: disableCertificateVerification
+  }
+];
+
 const commands = [
   {
     trigger: 'assigned',
@@ -29,14 +37,7 @@ const commands = [
   {
     trigger: 'configure',
     description: 'Setup or update required config',
-    fn: configure,
-    options: [
-      {
-        trigger: '-s --self-signed',
-        description: 'disables the verification of certificates when configuring mergify',
-        fn: disableCertificateVerification
-      }
-    ]
+    fn: configure
   },
   {
     trigger: 'verify',
@@ -59,20 +60,15 @@ const run = async() => {
     await verify();
   }
 
+  options.forEach(({trigger, description, fn}) => {
+    program.option(trigger, description, (...args) => fn(config, ...args));
+  });
+
   commands.forEach(({ trigger, description, fn, options }) => {
     program
       .command(trigger)
       .description(description)
       .action((...args) => fn(config, ...args));
-
-    if(options && options.length > 0){
-      options.forEach(
-        (option) => {
-          program.commands[program.commands.length - 1]
-            .option(option.trigger, option.description, option.fn);
-        }
-      );
-    }
 
   });
 
