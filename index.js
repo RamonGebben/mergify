@@ -64,7 +64,7 @@ const run = async() => {
     program.option(trigger, description, (...args) => fn(config, ...args));
   });
 
-  commands.forEach(({ trigger, description, fn, options }) => {
+  commands.forEach(({ trigger, description, fn }) => {
     program
       .command(trigger)
       .description(description)
