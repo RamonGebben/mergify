@@ -71,14 +71,6 @@ const run = async() => {
       .action((...args) => fn(config, ...args));
   });
 
-  commands.forEach(({ trigger, description, fn }) => {
-    program
-      .command(trigger)
-      .description(description)
-      .action((...args) => fn(config, ...args));
-
-  });
-
   return program;
 };
 
