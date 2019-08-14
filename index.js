@@ -8,12 +8,20 @@ const { configure } = require('./lib/commands/configure');
 const { verify } = require('./lib/commands/verify');
 const { getAllAssigned } = require('./lib/commands/getAllAssigned');
 const { getAllSubmitted } = require('./lib/commands/getAllSubmitted');
-
+const { disableCertificateVerification } = require('./lib/options/disableCertificateVerification');
 const { readConfig } = require('./lib/utils/readConfig');
 
 program
   .name('mergify')
   .version(pack.version);
+
+const options = [
+  {
+    trigger: '-s --self-signed',
+    description: 'disables the verification of certificates for commands',
+    fn: disableCertificateVerification
+  }
+];
 
 const commands = [
   {
@@ -51,6 +59,10 @@ const run = async() => {
     config = await readConfig();
     await verify();
   }
+
+  options.forEach(({trigger, description, fn}) => {
+    program.option(trigger, description, (...args) => fn(config, ...args));
+  });
 
   commands.forEach(({ trigger, description, fn }) => {
     program
