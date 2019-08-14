@@ -8,6 +8,7 @@ const { configure } = require('./lib/commands/configure');
 const { verify } = require('./lib/commands/verify');
 const { getAllAssigned } = require('./lib/commands/getAllAssigned');
 const { getAllSubmitted } = require('./lib/commands/getAllSubmitted');
+const { review } = require('./lib/commands/review');
 
 const { readConfig } = require('./lib/utils/readConfig');
 
@@ -27,6 +28,12 @@ const commands = [
     fn: getAllSubmitted
   },
   {
+    trigger: 'review',
+    description: 'Return changes to dirty state so you can review code locally',
+    fn: review
+  },
+  {
+    trigger: 'configure',
     trigger: 'configure',
     description: 'Setup or update required config',
     fn: configure
