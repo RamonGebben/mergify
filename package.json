@@ -1,12 +1,12 @@
 {
   "dependencies": {
     "chalk": "^2.3.2",
-    "commander": "^2.15.1",
-    "inquirer": "^5.2.0",
+    "commander": "^3.0.0",
+    "inquirer": "^6.5.1",
     "node-fetch": "^2.1.2",
-    "ora": "^2.0.0",
+    "ora": "^3.4.0",
     "query-string": "^6.0.0",
-    "ramda": "^0.25.0"
+    "ramda": "^0.26.1"
   },
   "name": "@pindakaasman/mergify",
   "repository": "https://github.com/RamonGebben/mergify.git",
@@ -20,14 +20,14 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "jest": "^22.4.3",
-    "jest-fetch-mock": "^1.5.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.8.0",
+    "jest-fetch-mock": "^2.1.2",
     "mock-fs": "^4.4.2"
   },
   "scripts": {
